@@ -66,5 +66,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-//replace github.com/chronark/vercel-go => github.com/e-gineer/vercel-go v0.0.0-20220428054107-b77d3f95740e
-replace github.com/chronark/vercel-go => /Users/nathan/src/vercel-go
+replace github.com/chronark/vercel-go => github.com/e-gineer/vercel-go v0.0.0-20220713010403-d95941d4f783
