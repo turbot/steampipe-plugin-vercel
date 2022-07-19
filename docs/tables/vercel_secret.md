@@ -13,7 +13,7 @@ select
   uid,
   created_at
 from
-  vercel_secret
+  vercel_secret;
 ```
 
 ### Secrets more than 1 year old
@@ -27,7 +27,7 @@ select
 from
   vercel_secret
 where
-  created_at < now() - interval '1 year'
+  created_at < now() - interval '1 year';
 ```
 
 ### Secrets used by environment variables
@@ -46,5 +46,5 @@ from
   vercel_secret as s
 where
   e ->> 'type' = 'secret'
-  and e ->> 'value' = s.uid
+  and e ->> 'value' = s.uid;
 ```

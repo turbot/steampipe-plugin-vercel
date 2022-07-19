@@ -13,7 +13,7 @@ select
   name,
   description
 from
-  vercel_team
+  vercel_team;
 ```
 
 ### Get role of the authenticated user in each team
@@ -23,7 +23,7 @@ select
   name,
   membership ->> 'role' as role
 from
-  vercel_team
+  vercel_team;
 ```
 
 ## Number of invoiced seats per team
@@ -33,5 +33,5 @@ select
   name,
   billing -> 'invoiceItems' -> 'teamSeats' ->> 'quantity' as seats
 from
-  vercel_team
+  vercel_team;
 ```

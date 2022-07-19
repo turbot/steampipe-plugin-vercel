@@ -10,5 +10,5 @@ Get information about the user authenticated with Vercel by Steampipe.
 select
   *
 from
-  vercel_user
+  vercel_user;
 ```
