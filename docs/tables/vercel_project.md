@@ -12,7 +12,7 @@ select
   framework,
   updated_at
 from
-  vercel_project
+  vercel_project;
 ```
 
 ### Projects not updated in the last year
@@ -25,7 +25,7 @@ select
 from
   vercel_project
 where
-  updated_at < now() - interval '1 year'
+  updated_at < now() - interval '1 year';
 ```
 
 ### Latest deployments
@@ -40,7 +40,7 @@ from
   vercel_project as p,
   jsonb_array_elements(latest_deployments) as d
 order by
-  created_at desc
+  created_at desc;
 ```
 
 ### Current production target by project
@@ -58,7 +58,7 @@ select
 from
   vercel_project
 order by
-  name
+  name;
 ```
 
 ### List all project environment variables
@@ -70,7 +70,7 @@ select
   e ->> 'target'
 from
   vercel_project as p,
-  jsonb_array_elements(env) as e
+  jsonb_array_elements(env) as e;
 ```
 
 ### Environment variables that are not encrypted
@@ -84,7 +84,7 @@ from
   vercel_project as p,
   jsonb_array_elements(env) as e
 where
-  e ->> 'type' != 'encrypted'
+  e ->> 'type' != 'encrypted';
 ```
 
 ### Production environment variables older than 90 days
@@ -100,7 +100,7 @@ from
   jsonb_array_elements(env) as e
 where
   e -> 'target' ? 'production'
-  and to_timestamp((e ->> 'createdAt')::bigint / 1000) < now() - interval '90 days'
+  and to_timestamp((e ->> 'createdAt')::bigint / 1000) < now() - interval '90 days';
 ```
 
 ### Projects by framework environment variables older than 90 days
@@ -114,5 +114,5 @@ from
 group by
   framework
 order by
-  count desc
+  count desc;
 ```

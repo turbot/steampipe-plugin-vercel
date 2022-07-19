@@ -13,7 +13,7 @@ select
   created_at,
   expires_at
 from
-  vercel_domain
+  vercel_domain;
 ```
 
 ### Domains expiring in the next 90 days
@@ -27,5 +27,5 @@ select
 from
   vercel_domain
 where
-  expires_at < now() + interval '90 days'
+  expires_at < now() + interval '90 days';
 ```

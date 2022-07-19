@@ -14,7 +14,7 @@ select
   value,
   ttl
 from
-  vercel_dns_record
+  vercel_dns_record;
 ```
 
 ### List all A records for all domains
@@ -28,5 +28,5 @@ select
 from
   vercel_dns_record
 where
-  type = 'A'
+  type = 'A';
 ```
