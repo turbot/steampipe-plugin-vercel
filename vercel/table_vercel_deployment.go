@@ -18,6 +18,7 @@ func tableVercelDeployment(ctx context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the deployment."},
 			{Name: "url", Type: proto.ColumnType_STRING, Description: "URL of the deployment."},
+			{Name: "state", Type: proto.ColumnType_STRING, Description: "One of: BUILDING, ERROR, INITIALIZING, QUEUED, READY, CANCELED."},
 			{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("Created").Transform(transform.UnixMsToTimestamp), Description: "Time when the deployment was created."},
 			{Name: "creator", Type: proto.ColumnType_JSON, Description: "Creator of the deployment."},
 			{Name: "building_at", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("BuildingAt").Transform(transform.UnixMsToTimestamp), Description: "Time when deployment started to build."},

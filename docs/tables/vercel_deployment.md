@@ -9,13 +9,13 @@ List deployments in your account.
 ```sql
 select
   name as project,
-  to_char(created_at, 'YYYY-MM-DD HH24:mm') as created_at,
-  now() - ready > interval '1 min' as ready,
+  state,
   url,
   creator ->> 'email' as creator,
-  meta ->> 'githubCommitMessage' as commit
+  meta ->> 'githubCommitMessage' as commit_message,
+  meta ->> 'githubCommitRef' as commit_ref
 from
   vercel_deployment
 order by 
-  created_at desc;
+  created_at desc
 ```
