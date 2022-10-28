@@ -36,17 +36,12 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		return nil, err
 	}
 
-	req := deployment.ListDeploymentsRequest{Limit: 100}
-	limit := d.QueryContext.GetLimit()
-	plugin.Logger(ctx).Warn("vercel_deployment.listDeployment", "queryContext", "limit", limit)
-	if limit == -1 {
-		limit = int64(req.Limit)
-	}
+	req := deployment.ListDeploymentsRequest{Limit: 100}  // how many results per api gulp
+	postgresLimit := d.QueryContext.GetLimit()            // the SQL limit
 
 	total := 0
 	for {
 		res, err := conn.Deployment.List(req)
-		plugin.Logger(ctx).Debug("vercel_dns.listDeployment", "res", res)
 		if err != nil {
 			plugin.Logger(ctx).Error("vercel_domain.listDeployment", "query_error", err)
 			return nil, err
@@ -54,14 +49,14 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		for _, i := range res.Deployments {
 			d.StreamListItem(ctx, i)
 			total += 1
-			if int64(total) == limit {
-				break
+			if int64(total) == postgresLimit {
+				res.Pagination.Next = 0
 			}
 		}
-		req.Until = int(res.Pagination.Next)
-		if int64(total) == limit {
+		if res.Pagination.Next == 0 {
 			break
 		}
+		req.Until = int(res.Pagination.Next)
 	}
 
 	return nil, nil
