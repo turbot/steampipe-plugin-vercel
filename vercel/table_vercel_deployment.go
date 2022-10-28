@@ -3,6 +3,7 @@ package vercel
 import (
 	"context"
 
+	"github.com/chronark/vercel-go/endpoints/deployment"
 	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
@@ -35,14 +36,32 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		return nil, err
 	}
 
-	plugin.Logger(ctx).Debug("vercel_deployment.listDeployment")
-	res, err := conn.Deployment.List()
-	if err != nil {
-		plugin.Logger(ctx).Error("vercel_domain.listDomain", "query_error", err)
-		return nil, err
+	req := deployment.ListDeploymentsRequest{Limit: 100}
+	limit := d.QueryContext.GetLimit()
+	plugin.Logger(ctx).Warn("vercel_deployment.listDeployment", "queryContext", "limit", limit)
+	if limit == -1 {
+		limit = int64(req.Limit)
 	}
-	for _, i := range res.Deployments {
-		d.StreamListItem(ctx, i)
+
+	total := 0
+	for {
+		res, err := conn.Deployment.List(req)
+		plugin.Logger(ctx).Debug("vercel_dns.listDeployment", "res", res)
+		if err != nil {
+			plugin.Logger(ctx).Error("vercel_domain.listDeployment", "query_error", err)
+			return nil, err
+		}
+		for _, i := range res.Deployments {
+			d.StreamListItem(ctx, i)
+			total += 1
+			if int64(total) == limit {
+				break
+			}
+		}
+		req.Until = int(res.Pagination.Next)
+		if int64(total) == limit {
+			break
+		}
 	}
 
 	return nil, nil

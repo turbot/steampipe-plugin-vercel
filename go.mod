@@ -85,4 +85,4 @@ require (
 	k8s.io/apimachinery v0.23.5 // indirect
 )
 
-replace github.com/chronark/vercel-go => github.com/judell/vercel-go v0.1.0
+replace github.com/chronark/vercel-go => github.com/judell/vercel-go v0.1.3

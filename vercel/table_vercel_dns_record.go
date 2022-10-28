@@ -63,7 +63,7 @@ func listDnsRecord(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 		for _, i := range res.Records {
 			d.StreamListItem(ctx, dnsRecordRow{parentDomain, i})
 		}
-		plugin.Logger(ctx).Debug("vercel_dns.listDnsRecord", "pagination", res.Pagination)
+		plugin.Logger(ctx).Warn("vercel_dns.listDnsRecord", "pagination", res.Pagination)
 		if res.Pagination.Next == 0 {
 			break
 		}
