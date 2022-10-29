@@ -6,6 +6,7 @@ require (
 	github.com/chronark/vercel-go v0.0.0-00010101000000-000000000000
 	github.com/pkg/errors v0.9.1
 	github.com/turbot/steampipe-plugin-sdk/v4 v4.1.6
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
@@ -78,11 +79,10 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220407144326-9054f6ed7bac // indirect
 	google.golang.org/grpc v1.48.0 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/tomb.v2 v2.0.0-20161208151619-d5d1b5820637 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/apimachinery v0.23.5 // indirect
 )
 
-replace github.com/chronark/vercel-go => github.com/judell/vercel-go v0.1.3
+replace github.com/chronark/vercel-go => github.com/judell/vercel-go v0.1.4
