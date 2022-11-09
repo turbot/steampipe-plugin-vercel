@@ -4,7 +4,7 @@ List deployments in your account.
 
 ## Examples
 
-### List all deployments
+### List recent deployments
 
 ```sql
 select
@@ -16,6 +16,8 @@ select
   meta ->> 'githubCommitRef' as commit_ref
 from
   vercel_deployment
+where
+  created_at > now() - interval '2 weeks'
 order by 
   created_at desc
 ```
