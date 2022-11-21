@@ -2,10 +2,14 @@ package vercel
 
 import (
 	"context"
+	"time"
 
+	"github.com/chronark/vercel-go/endpoints/deployment"
 	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func tableVercelDeployment(ctx context.Context) *plugin.Table {
@@ -13,6 +17,9 @@ func tableVercelDeployment(ctx context.Context) *plugin.Table {
 		Name:        "vercel_deployment",
 		Description: "Deployments in the Vercel account.",
 		List: &plugin.ListConfig{
+			KeyColumns: plugin.KeyColumnSlice{
+				{Name: "created_at", Require: plugin.Optional, Operators: []string{">", ">=", "=", "<", "<="}},
+			},
 			Hydrate: listDeployment,
 		},
 		Columns: []*plugin.Column{
@@ -35,14 +42,51 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		return nil, err
 	}
 
-	plugin.Logger(ctx).Debug("vercel_deployment.listDeployment")
-	res, err := conn.Deployment.List()
-	if err != nil {
-		plugin.Logger(ctx).Error("vercel_domain.listDomain", "query_error", err)
-		return nil, err
+	req := deployment.ListDeploymentsRequest{Limit: 100}  // how many results per api gulp
+	postgresLimit := d.QueryContext.GetLimit()            // the SQL limit
+
+	if d.Quals["created_at"] != nil {
+		for _, q := range d.Quals["created_at"].Quals {
+
+			postgresTimestamp := q.Value.GetTimestampValue().Seconds * 1000
+			q.Value.Value = &proto.QualValue_TimestampValue{TimestampValue: &timestamppb.Timestamp{Seconds: postgresTimestamp}}
+
+			req.Until = time.Now().UnixMilli()
+
+			switch q.Operator {
+			case ">":
+				req.Since = postgresTimestamp
+			case ">=":
+				req.Since = postgresTimestamp
+			case "=":
+				req.Since = postgresTimestamp
+			case "<":
+				req.Until = postgresTimestamp
+			case "<=":
+				req.Until = postgresTimestamp
+			}
+		}
 	}
-	for _, i := range res.Deployments {
-		d.StreamListItem(ctx, i)
+
+	total := 0
+	for {
+		res, err := conn.Deployment.List(req)
+		plugin.Logger(ctx).Warn("prev %v, next %v, limit %v", res.Pagination.Prev, res.Pagination.Next, postgresLimit)
+		if err != nil {
+			plugin.Logger(ctx).Error("vercel_domain.listDeployment", "query_error", err)
+			return nil, err
+		}
+		for _, i := range res.Deployments {
+			d.StreamListItem(ctx, i)
+			total += 1
+			if int64(total) == postgresLimit {
+				res.Pagination.Next = 0
+			}
+		}
+		if res.Pagination.Next == 0 {
+			break
+		}
+		req.Until = res.Pagination.Next
 	}
 
 	return nil, nil
