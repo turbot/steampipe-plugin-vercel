@@ -1,3 +1,14 @@
+## v0.2.0 [2022-11-24]
+
+_What's new?_
+
+- New tables added:
+  - [vercel_deployment](https://hub.steampipe.io/plugins/turbot/vercel/tables/vercel_deployment) ([#4](https://github.com/turbot/steampipe-plugin-vercel/pull/4))
+
+_Dependencies_
+
+- Recompiled plugin with [steampipe-plugin-sdk v4.1.8](https://github.com/turbot/steampipe-plugin-sdk/blob/main/CHANGELOG.md#v418-2022-09-08) which increases the default open file limit. ([#5](https://github.com/turbot/steampipe-plugin-vercel/pull/5))
+
 ## v0.1.0 [2022-09-09]
 
 _Dependencies_
