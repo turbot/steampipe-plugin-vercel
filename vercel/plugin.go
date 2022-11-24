@@ -19,6 +19,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			ShouldIgnoreError: isNotFoundError,
 		},
 		TableMap: map[string]*plugin.Table{
+			"vercel_deployment": tableVercelDeployment(ctx),
 			"vercel_dns_record": tableVercelDnsRecord(ctx),
 			"vercel_domain":     tableVercelDomain(ctx),
 			"vercel_project":    tableVercelProject(ctx),
