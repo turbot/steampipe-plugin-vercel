@@ -71,14 +71,13 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	total := 0
 	for {
 		res, err := conn.Deployment.List(req)
-		plugin.Logger(ctx).Warn("prev %v, next %v, limit %v", res.Pagination.Prev, res.Pagination.Next, postgresLimit)
 		if err != nil {
 			plugin.Logger(ctx).Error("vercel_domain.listDeployment", "query_error", err)
 			return nil, err
 		}
 		for _, i := range res.Deployments {
 			d.StreamListItem(ctx, i)
-			total += 1
+			total++
 			if int64(total) == postgresLimit {
 				res.Pagination.Next = 0
 			}
