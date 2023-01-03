@@ -2,7 +2,6 @@ package vercel
 
 import (
 	"context"
-	"time"
 
 	"github.com/chronark/vercel-go/endpoints/deployment"
 	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
@@ -18,7 +17,7 @@ func tableVercelDeployment(ctx context.Context) *plugin.Table {
 		Description: "Deployments in the Vercel account.",
 		List: &plugin.ListConfig{
 			KeyColumns: plugin.KeyColumnSlice{
-				{Name: "created_at", Require: plugin.Optional, Operators: []string{">", ">=", "=", "<", "<="}},
+				{Name: "created_at", Require: plugin.Optional, Operators: []string{">", ">=", "="}},
 			},
 			Hydrate: listDeployment,
 		},
@@ -51,8 +50,6 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 			postgresTimestamp := q.Value.GetTimestampValue().Seconds * 1000
 			q.Value.Value = &proto.QualValue_TimestampValue{TimestampValue: &timestamppb.Timestamp{Seconds: postgresTimestamp}}
 
-			req.Until = time.Now().UnixMilli()
-
 			switch q.Operator {
 			case ">":
 				req.Since = postgresTimestamp
@@ -60,16 +57,13 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 				req.Since = postgresTimestamp
 			case "=":
 				req.Since = postgresTimestamp
-			case "<":
-				req.Until = postgresTimestamp
-			case "<=":
-				req.Until = postgresTimestamp
 			}
 		}
 	}
 
 	total := 0
 	for {
+		plugin.Logger(ctx).Debug("vercel_domain.listDeployment", "req", req)
 		res, err := conn.Deployment.List(req)
 		if err != nil {
 			plugin.Logger(ctx).Error("vercel_domain.listDeployment", "query_error", err)
