@@ -5,9 +5,9 @@ import (
 
 	"github.com/chronark/vercel-go/endpoints/secret"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func tableVercelSecret(ctx context.Context) *plugin.Table {
@@ -74,10 +74,10 @@ func getSecret(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) 
 	if h.Item != nil {
 		s := h.Item.(secret.Secret)
 		nameOrId = s.Uid
-	} else if d.KeyColumnQuals["uid"] != nil {
-		nameOrId = d.KeyColumnQuals["uid"].GetStringValue()
-	} else if d.KeyColumnQuals["name"] != nil {
-		nameOrId = d.KeyColumnQuals["name"].GetStringValue()
+	} else if d.EqualsQuals["uid"] != nil {
+		nameOrId = d.EqualsQuals["uid"].GetStringValue()
+	} else if d.EqualsQuals["name"] != nil {
+		nameOrId = d.EqualsQuals["name"].GetStringValue()
 	} else {
 		return nil, nil
 	}

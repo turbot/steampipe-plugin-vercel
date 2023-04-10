@@ -5,9 +5,9 @@ import (
 
 	"github.com/chronark/vercel-go/endpoints/team"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func tableVercelTeam(ctx context.Context) *plugin.Table {
@@ -87,10 +87,10 @@ func getTeam(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (i
 	if h.Item != nil {
 		s := h.Item.(team.Team)
 		req.ID = s.ID
-	} else if d.KeyColumnQuals["id"] != nil {
-		req.ID = d.KeyColumnQuals["id"].GetStringValue()
-	} else if d.KeyColumnQuals["slug"] != nil {
-		req.Slug = d.KeyColumnQuals["slug"].GetStringValue()
+	} else if d.EqualsQuals["id"] != nil {
+		req.ID = d.EqualsQuals["id"].GetStringValue()
+	} else if d.EqualsQuals["slug"] != nil {
+		req.Slug = d.EqualsQuals["slug"].GetStringValue()
 	} else {
 		return nil, nil
 	}
