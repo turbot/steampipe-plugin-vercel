@@ -6,7 +6,7 @@ require (
 	github.com/chronark/vercel-go v0.0.0-20220428054107-b77d3f95740e
 	github.com/pkg/errors v0.9.1
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.5.1
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
