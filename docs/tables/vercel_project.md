@@ -1,10 +1,20 @@
-# Table: vercel_project
+---
+title: "Steampipe Table: vercel_project - Query Vercel Projects using SQL"
+description: "Allows users to query Vercel Projects, specifically the details of each project such as name, id, type, and owner. This can provide insights into project configurations and ownership."
+---
 
-List projects in your account.
+# Table: vercel_project - Query Vercel Projects using SQL
+
+A Vercel Project is a workspace where you can deploy your applications or websites. Each project is linked to a Git repository and contains settings for deployments, domains, environment variables, and more. Projects can be owned by an individual or a team, and they provide the basis for continuous deployment in Vercel.
+
+## Table Usage Guide
+
+The `vercel_project` table provides insights into projects within Vercel. As a DevOps engineer, explore project-specific details through this table, including project names, types, and owners. Utilize it to uncover information about projects, such as their configurations, associated Git repositories, and their continuous deployment settings.
 
 ## Examples
 
 ### List all projects
+Explore the various projects, including their respective frameworks and last updated dates, to keep track of the latest changes and developments. This can help in understanding the current state of each project and facilitate strategic planning.
 
 ```sql
 select
@@ -16,6 +26,7 @@ from
 ```
 
 ### Projects not updated in the last year
+Identify projects that have not seen any updates in the past year. This can be useful to determine which projects may be inactive or outdated.
 
 ```sql
 select
@@ -29,6 +40,7 @@ where
 ```
 
 ### Latest deployments
+Gain insights into the most recent project deployments, including when they were created, by whom, and their associated URLs. This is particularly useful for tracking project updates and ensuring accountability within your team.
 
 ```sql
 select
@@ -44,6 +56,7 @@ order by
 ```
 
 ### Current production target by project
+This query is useful for gaining insights into the production targets of different projects. It arranges them in order of their names, providing a clear view of the production status, including the GitHub repository details, which can aid in project management and progress tracking.
 
 ```sql
 select
@@ -62,6 +75,7 @@ order by
 ```
 
 ### List all project environment variables
+Explore the environmental variables associated with each project to understand how configurations are set and managed. This is useful for auditing and maintaining consistency across various projects.
 
 ```sql
 select
@@ -74,6 +88,7 @@ from
 ```
 
 ### Environment variables that are not encrypted
+Gain insights into the environment variables within your Vercel project that are not encrypted. This query is useful for identifying potential security risks in your project's configuration.
 
 ```sql
 select
@@ -88,6 +103,7 @@ where
 ```
 
 ### Production environment variables older than 90 days
+Explore which production environment variables have not been updated in the last 90 days. This can help identify potential areas of neglect or outdated configurations in your project.
 
 ```sql
 select
@@ -104,6 +120,7 @@ where
 ```
 
 ### Projects by framework environment variables older than 90 days
+Explore which frameworks are most commonly used in your Vercel projects. This can help you understand the popularity and usage of different frameworks within your projects.
 
 ```sql
 select
