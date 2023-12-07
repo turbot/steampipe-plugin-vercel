@@ -16,7 +16,17 @@ The `vercel_team` table provides insights into teams within Vercel. As a develop
 ### List all teams
 Explore which teams are currently set up in your Vercel environment. This can help in managing team access and permissions effectively.
 
-```sql
+```sql+postgres
+select
+  id,
+  slug,
+  name,
+  description
+from
+  vercel_team;
+```
+
+```sql+sqlite
 select
   id,
   slug,
@@ -29,7 +39,7 @@ from
 ### Get role of the authenticated user in each team
 The first query allows you to find out the role of the authenticated user in each team, which can be useful in managing team permissions and roles. The second query provides information on the number of invoiced seats per team, which can be essential for budgeting and resource allocation.
 
-```sql
+```sql+postgres
 select
   name,
   membership ->> 'role' as role
@@ -37,12 +47,28 @@ from
   vercel_team;
 ```
 
+```sql+sqlite
+select
+  name,
+  json_extract(membership, '$.role') as role
+from
+  vercel_team;
+```
+
 ## Number of invoiced seats per team
 
-```sql
+```sql+postgres
 select
   name,
   billing -> 'invoiceItems' -> 'teamSeats' ->> 'quantity' as seats
+from
+  vercel_team;
+```
+
+```sql+sqlite
+select
+  name,
+  json_extract(json_extract(json_extract(billing, '$.invoiceItems'), '$.teamSeats'), '$.quantity') as seats
 from
   vercel_team;
 ```

@@ -16,7 +16,17 @@ The `vercel_domain` table provides insights into the custom domains within Verce
 ### List all domains
 Discover the segments that consist of all domains, including their verification status and the dates they were created and will expire. This can help you manage and track your domains effectively.
 
-```sql
+```sql+postgres
+select
+  name,
+  verified,
+  created_at,
+  expires_at
+from
+  vercel_domain;
+```
+
+```sql+sqlite
 select
   name,
   verified,
@@ -31,7 +41,7 @@ Determine the domains that are due to expire within the next 90 days. This query
 Lists domains expiring soon. Domains managed outside of Vercel will not be included in results.
 
 
-```sql
+```sql+postgres
 select
   name,
   expires_at
@@ -39,4 +49,14 @@ from
   vercel_domain
 where
   expires_at < now() + interval '90 days';
+```
+
+```sql+sqlite
+select
+  name,
+  expires_at
+from
+  vercel_domain
+where
+  expires_at < datetime('now', '+90 days');
 ```

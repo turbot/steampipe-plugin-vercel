@@ -16,7 +16,18 @@ The `vercel_dns_record` table provides insights into DNS Records within Vercel. 
 ### List all DNS records for all domains
 Explore which DNS records are associated with your domains. This can be useful in managing and troubleshooting your network, ensuring the correct routing of internet traffic to your domains.
 
-```sql
+```sql+postgres
+select
+  domain_name,
+  name,
+  type,
+  value,
+  ttl
+from
+  vercel_dns_record;
+```
+
+```sql+sqlite
 select
   domain_name,
   name,
@@ -30,7 +41,19 @@ from
 ### List all A records for all domains
 Explore which domains have been assigned an IPv4 address (A record). This is useful for understanding the distribution of IP addresses across your domains, aiding in network management and troubleshooting.
 
-```sql
+```sql+postgres
+select
+  domain_name,
+  type,
+  value,
+  ttl
+from
+  vercel_dns_record
+where
+  type = 'A';
+```
+
+```sql+sqlite
 select
   domain_name,
   type,

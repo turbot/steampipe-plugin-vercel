@@ -16,7 +16,14 @@ The `vercel_user` table provides insights into individual user accounts within t
 ### Get user information
 Explore the user profiles within your Vercel account to better manage and understand your user base. This can be particularly useful for auditing user access and permissions within your account.
 
-```sql
+```sql+postgres
+select
+  *
+from
+  vercel_user;
+```
+
+```sql+sqlite
 select
   *
 from
