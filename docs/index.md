@@ -70,7 +70,4 @@ Environment variables are also available as an alternate configuration method:
 * `VERCEL_API_TOKEN`
 * `VERCEL_TEAM`
 
-## Get involved
 
-- Open source: https://github.com/turbot/steampipe-plugin-vercel
-- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
