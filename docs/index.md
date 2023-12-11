@@ -8,6 +8,7 @@ short_name: "vercel"
 description: "Steampipe plugin to query projects, teams, domains and more from Vercel."
 og_description: "Query Vercel with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/vercel-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # Vercel + Steampipe
