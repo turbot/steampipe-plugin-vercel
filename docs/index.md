@@ -8,13 +8,14 @@ short_name: "vercel"
 description: "Steampipe plugin to query projects, teams, domains and more from Vercel."
 og_description: "Query Vercel with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/vercel-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # Vercel + Steampipe
 
 [Vercel](https://vercel.com) is a cloud hosting service for frontend frameworks and static sites.
 
-[Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
+[Steampipe](https://steampipe.io) is an open-source zero-ETL engine to instantly query cloud APIs using SQL.
 
 List projects in your Vercel account:
 
@@ -69,7 +70,4 @@ Environment variables are also available as an alternate configuration method:
 * `VERCEL_API_TOKEN`
 * `VERCEL_TEAM`
 
-## Get involved
 
-- Open source: https://github.com/turbot/steampipe-plugin-vercel
-- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
