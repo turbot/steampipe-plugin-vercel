@@ -2,21 +2,11 @@ package vercel
 
 import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
 
 type vercelConfig struct {
-	APIToken *string `cty:"api_token"`
-	Team     *string `cty:"team"`
-}
-
-var ConfigSchema = map[string]*schema.Attribute{
-	"api_token": {
-		Type: schema.TypeString,
-	},
-	"team": {
-		Type: schema.TypeString,
-	},
+	APIToken *string `hcl:"api_token"`
+	Team     *string `hcl:"team"`
 }
 
 func ConfigInstance() interface{} {
