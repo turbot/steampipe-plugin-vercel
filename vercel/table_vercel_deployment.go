@@ -21,7 +21,7 @@ func tableVercelDeployment(ctx context.Context) *plugin.Table {
 			},
 			Hydrate: listDeployment,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the deployment."},
 			{Name: "url", Type: proto.ColumnType_STRING, Description: "URL of the deployment."},
 			{Name: "state", Type: proto.ColumnType_STRING, Description: "One of: BUILDING, ERROR, INITIALIZING, QUEUED, READY, CANCELED."},
@@ -30,7 +30,7 @@ func tableVercelDeployment(ctx context.Context) *plugin.Table {
 			{Name: "building_at", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("BuildingAt").Transform(transform.UnixMsToTimestamp), Description: "Time when deployment started to build."},
 			{Name: "ready", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("Ready").Transform(transform.UnixMsToTimestamp), Description: "Time when deployment is ready to view."},
 			{Name: "meta", Type: proto.ColumnType_JSON, Description: "GitHub metadata associated with the deployment."},
-		},
+		}),
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/chronark/vercel-go/endpoints/user"
 )
 
 func tableVercelUser(ctx context.Context) *plugin.Table {
@@ -15,7 +16,7 @@ func tableVercelUser(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listUser,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the user."},
 			{Name: "uid", Type: proto.ColumnType_STRING, Transform: transform.FromField("Uid"), Description: "Unique identifier of the user."},
@@ -35,26 +36,20 @@ func tableVercelUser(ctx context.Context) *plugin.Table {
 			{Name: "import_flow_git_namespace", Type: proto.ColumnType_STRING, Description: ""},
 			{Name: "import_flow_git_namespace_id", Type: proto.ColumnType_STRING, Description: ""},
 			{Name: "import_flow_git_provider", Type: proto.ColumnType_STRING, Description: ""},
-		},
+		}),
 	}
 }
 
-func listUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	conn, err := connect(ctx, d)
-	if err != nil {
-		plugin.Logger(ctx).Error("vercel_user.listUser", "connection_error", err)
-		return nil, err
-	}
-
-	res, err := conn.User.Get()
+func listUser(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	res, err := getUserUidMemoized(ctx, d, h)
 	if err != nil {
 		plugin.Logger(ctx).Error("vercel_user.listUser", "query_error", err)
 		return nil, err
 	}
 
-	plugin.Logger(ctx).Debug("vercel_user.listUser", "res", res)
+	user := res.(user.User)
 
-	d.StreamListItem(ctx, res.User)
+	d.StreamListItem(ctx, user)
 
 	return nil, nil
 }

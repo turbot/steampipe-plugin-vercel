@@ -21,7 +21,7 @@ func tableVercelSecret(ctx context.Context) *plugin.Table {
 			Hydrate:    getSecret,
 			KeyColumns: plugin.AnyColumn([]string{"name", "uid"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the secret."},
 			{Name: "uid", Type: proto.ColumnType_STRING, Transform: transform.FromField("Uid"), Description: "Unique identifier of the secret."},
@@ -31,7 +31,7 @@ func tableVercelSecret(ctx context.Context) *plugin.Table {
 			{Name: "project_id", Type: proto.ColumnType_STRING, Description: "Unique identifier of the project the secret belongs to."},
 			{Name: "value", Type: proto.ColumnType_STRING, Description: "Value of the secret."},
 			{Name: "decryptable", Type: proto.ColumnType_BOOL, Description: "True if the secret value can be decrypted after it is created."},
-		},
+		}),
 	}
 }
 

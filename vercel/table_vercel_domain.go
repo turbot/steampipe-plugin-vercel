@@ -17,7 +17,7 @@ func tableVercelDomain(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listDomain,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the domain."},
 			// Other columns
@@ -38,7 +38,7 @@ func tableVercelDomain(ctx context.Context) *plugin.Table {
 			{Name: "intended_name_servers", Type: proto.ColumnType_JSON, Description: "Intended name servers for the domain."},
 			{Name: "creator", Type: proto.ColumnType_JSON, Description: "Creator of the domain."},
 			{Name: "zone", Type: proto.ColumnType_BOOL, Description: "Zone of the domain."},
-		},
+		}),
 	}
 }
 
