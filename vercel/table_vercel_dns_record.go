@@ -19,7 +19,7 @@ func tableVercelDnsRecord(ctx context.Context) *plugin.Table {
 			ParentHydrate: listDomain,
 			Hydrate:       listDnsRecord,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "domain_name", Type: proto.ColumnType_STRING, Transform: transform.FromField("Domain.Name"), Description: "Domain name the record belongs to."},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the DNS record."},
@@ -34,7 +34,7 @@ func tableVercelDnsRecord(ctx context.Context) *plugin.Table {
 			{Name: "priority", Type: proto.ColumnType_INT, Description: "Priority of the DNS record."},
 			{Name: "slug", Type: proto.ColumnType_STRING, Description: "Slug of the DNS record."},
 			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("UpdatedAt").Transform(transform.UnixMsToTimestamp), Description: "Time when the DNS record was created."},
-		},
+		}),
 	}
 }
 

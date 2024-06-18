@@ -23,7 +23,7 @@ func tableVercelTeam(ctx context.Context) *plugin.Table {
 			// Not found for teams returns unauthorized
 			ShouldIgnoreError: isNotFoundOrUnauthorizedError,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "Unique identifier of the team."},
 			{Name: "slug", Type: proto.ColumnType_STRING, Description: "Slug of the team."},
@@ -44,7 +44,7 @@ func tableVercelTeam(ctx context.Context) *plugin.Table {
 			{Name: "soft_block", Type: proto.ColumnType_JSON, Description: ""},
 			{Name: "staging_prefix", Type: proto.ColumnType_STRING, Description: ""},
 			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("UpdatedAt").Transform(transform.UnixMsToTimestamp), Description: "Time when the team was last updated."},
-		},
+		}),
 	}
 }
 

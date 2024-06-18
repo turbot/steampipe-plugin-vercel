@@ -17,7 +17,7 @@ func tableVercelProject(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listProject,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the project."},
 			// Other columns
@@ -47,7 +47,7 @@ func tableVercelProject(ctx context.Context) *plugin.Table {
 			{Name: "sso_protection", Type: proto.ColumnType_JSON, Description: "SSO protection information, if enabled."},
 			{Name: "targets", Type: proto.ColumnType_JSON, Description: "Targets of the build."},
 			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Transform: transform.FromField("UpdatedAt").Transform(transform.UnixMsToTimestamp), Description: "Time when the project was last updated."},
-		},
+		}),
 	}
 }
 
