@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/chronark/vercel-go v0.0.0-20220428054107-b77d3f95740e
 	github.com/pkg/errors v0.9.1
-	github.com/turbot/steampipe-plugin-sdk/v5 v5.14.0
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.14.1
 	google.golang.org/protobuf v1.34.2
 )
 
