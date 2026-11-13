@@ -8,14 +8,14 @@ import (
 	"github.com/chronark/vercel-go"
 	"github.com/pkg/errors"
 
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
 )
 
 func connect(ctx context.Context, d *plugin.QueryData) (*vercel.Client, error) {
 
 	// Load connection from cache, which preserves throttling protection etc
 	cacheKey := "vercel"
-	if cachedData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, cacheKey); ok {
 		return cachedData.(*vercel.Client), nil
 	}
 
@@ -45,15 +45,15 @@ func connect(ctx context.Context, d *plugin.QueryData) (*vercel.Client, error) {
 	conn := vercel.New(config)
 
 	// Save to cache
-	d.ConnectionManager.Cache.Set(cacheKey, conn)
+	_ = d.ConnectionCache.Set(ctx, cacheKey, conn)
 
 	return conn, nil
 }
 
-func isNotFoundError(err error) bool {
+func isNotFoundError(_ context.Context, _ *plugin.QueryData, _ *plugin.HydrateData, err error) bool {
 	return strings.Contains(err.Error(), "status code 404")
 }
 
-func isNotFoundOrUnauthorizedError(err error) bool {
+func isNotFoundOrUnauthorizedError(_ context.Context, _ *plugin.QueryData, _ *plugin.HydrateData, err error) bool {
 	return strings.Contains(err.Error(), "Unable to fetch")
 }

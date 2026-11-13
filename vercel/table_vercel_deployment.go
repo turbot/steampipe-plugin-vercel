@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/chronark/vercel-go/endpoints/deployment"
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -41,8 +41,8 @@ func listDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		return nil, err
 	}
 
-	req := deployment.ListDeploymentsRequest{Limit: 100}  // how many results per api gulp
-	postgresLimit := d.QueryContext.GetLimit()            // the SQL limit
+	req := deployment.ListDeploymentsRequest{Limit: 100} // how many results per api gulp
+	postgresLimit := d.QueryContext.GetLimit()           // the SQL limit
 
 	if d.Quals["created_at"] != nil {
 		for _, q := range d.Quals["created_at"].Quals {

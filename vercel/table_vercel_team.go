@@ -5,9 +5,9 @@ import (
 
 	"github.com/chronark/vercel-go/endpoints/team"
 
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
 )
 
 func tableVercelTeam(ctx context.Context) *plugin.Table {
@@ -21,7 +21,7 @@ func tableVercelTeam(ctx context.Context) *plugin.Table {
 			Hydrate:    getTeam,
 			KeyColumns: plugin.AnyColumn([]string{"id", "slug"}),
 			// Not found for teams returns unauthorized
-			ShouldIgnoreError: isNotFoundOrUnauthorizedError,
+			IgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreErrorFunc: isNotFoundOrUnauthorizedError},
 		},
 		Columns: commonColumns([]*plugin.Column{
 			// Top columns
